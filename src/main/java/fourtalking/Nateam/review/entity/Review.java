@@ -31,6 +31,10 @@ public class Review extends BaseLastModifiedTimeEntity {
 
     // JPA의 연관관계를 이용하지 않는 코드, 추후에 연관관계를 위한 리팩토링 가능성 있음
     @Column(nullable = false)
+    private Long userId;
+
+    // JPA의 연관관계를 이용하지 않는 코드, 추후에 연관관계를 위한 리팩토링 가능성 있음
+    @Column(nullable = false)
     private Long gameId;
 
 }
