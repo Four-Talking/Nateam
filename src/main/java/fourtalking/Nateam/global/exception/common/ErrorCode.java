@@ -23,7 +23,11 @@ public enum ErrorCode {
   NO_AUTHORIZATION_EXCEPTION(400, "접근 권한이 없습니다"),
 
   // 게임
-  NOT_FOUND_GAME_EXCEPTION(401, "게임 정보를 찾을 수 없습니다.");
+  NOT_FOUND_GAME_EXCEPTION(401, "게임 정보를 찾을 수 없습니다."),
+
+  // 리뷰
+  NOT_FOUND_REVIEW_EXCEPTION(401, "리뷰 정보를 찾을 수 없습니다.");
+
 
   private final int status;
 
