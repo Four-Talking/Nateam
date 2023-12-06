@@ -20,7 +20,8 @@ public enum ErrorCode {
   ALREADY_EXIST_USER_NAME_EXCEPTION(409, "이미 존재하는 이름입니다."),
   ALREADY_EXIST_EMAIL_EXCEPTION(409, "이미 존재하는 이메일입니다."),
   UNAUTHORIZED_MODIFY_EXCEPTION(401, "수정할 권한이 없습니다."),
-  NO_AUTHORIZATION_EXCEPTION(400, "접근 권한이 없습니다");
+  NO_AUTHORIZATION_EXCEPTION(400, "접근 권한이 없습니다"),
+  WRONG_PASSWORD_EXCEPTION(400, "틀린 비밀번호입니다.");
 
   private final int status;
 
