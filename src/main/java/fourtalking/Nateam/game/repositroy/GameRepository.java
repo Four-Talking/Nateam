@@ -11,7 +11,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     @Query("select "
             + "new fourtalking.Nateam.game.dto.GameGetDTO("
             + "g.gameId, g.gameName, g.gameIntroduction, g.gamePrice, "
-            + "avg(r.reviewRank), u.userName, g.createdTime, g.lastModifiedTime) "
+            + "coalesce(avg(r.reviewRank), 0) , u.userName, g.createdTime, g.lastModifiedTime) "
             + "from Game g "
             + "left outer join Review r on g.gameId = r.gameId "
             + "inner join User u on g.userId = u.userId "
