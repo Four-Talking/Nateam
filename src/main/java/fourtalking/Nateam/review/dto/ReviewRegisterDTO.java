@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 
 public class ReviewRegisterDTO{
+
     public record Request(
-            @NotBlank @Size String reviewContent,
+            @NotBlank @Size(max = 255) String reviewContent,
             @Min(1) @Max(5) int reviewRank) {
         public Review toEntity(Long gameId) {
             return Review.builder()
@@ -22,6 +23,7 @@ public class ReviewRegisterDTO{
         }
 
     }
+
     @Builder
     public record Response(Long userId, Long gameId, String reviewContent, int reviewRank, LocalDateTime createdDate) {
 
