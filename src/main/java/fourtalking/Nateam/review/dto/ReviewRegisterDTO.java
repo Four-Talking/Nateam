@@ -2,6 +2,7 @@ package fourtalking.Nateam.review.dto;
 
 import fourtalking.Nateam.review.entity.Review;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ import lombok.Builder;
 public class ReviewRegisterDTO{
     public record Request(
             @NotBlank @Size String reviewContent,
-            @NotBlank @Max(5) int reviewRank) {
+            @Min(1) @Max(5) int reviewRank) {
         public Review toEntity(Long gameId) {
             return Review.builder()
                     .userId(1L)
