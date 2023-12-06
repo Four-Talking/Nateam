@@ -1,10 +1,14 @@
 package fourtalking.Nateam.cartgame.entity;
 
+import fourtalking.Nateam.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,16 +26,21 @@ public class CartGame {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long carGameId;
 
+
     @Column(nullable = false)
     private int orderCount;
 
-    // JPA의 연관관계를 이용하지 않는 코드, 추후에 연관관계를 위한 리팩토링 가능성 있음
-    @Column(nullable = false)
-    private Long userId;
 
-    // JPA의 연관관계를 이용하지 않는 코드, 추후에 연관관계를 위한 리팩토링 가능성 있음
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
     @Column(nullable = false)
     private Long gameId;
 
+    public void update(){
+
+    }
 
 }

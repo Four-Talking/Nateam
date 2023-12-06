@@ -1,9 +1,13 @@
 package fourtalking.Nateam.cartgame.controller;
 
+import fourtalking.Nateam.cartgame.dto.CartGameRegisterDTO;
+import fourtalking.Nateam.cartgame.dto.CartGameRegisterDTO.CartResponse;
 import fourtalking.Nateam.cartgame.service.CartGameService;
+import fourtalking.Nateam.user.entity.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +20,18 @@ public class CartGameController {
 
   private final CartGameService cartGameService;
 
-  @PutMapping
-  public ResponseEntity<List<?>> updateCartGame(@RequestBody ) {
-    List<?> cardGameResponseDto = cartGameService.updateCartGame();
+  @PutMapping("/{gameId}")
+  public ResponseEntity<List<?>> updateCartGame(
+      @PathVariable Long gameId,
+      @RequestBody CartGameRegisterDTO.CartRequest RequestDto
+      //@AuthenticationPrincipal UserDetailsImpl userDetails
+       ) {
 
-    return ResponseEntity.ok(cardGameResponseDto);
+    User user;
+
+    List<CartResponse> cartGameResponseDto = cartGameService.updateCartGame(gameId, RequestDto,user);
+
+    return ResponseEntity.ok(cartGameResponseDto);
   }
 
 
