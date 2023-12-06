@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order extends BaseCreatedTimeEntity {
+public class Orders extends BaseCreatedTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

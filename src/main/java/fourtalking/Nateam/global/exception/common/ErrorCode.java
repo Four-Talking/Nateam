@@ -20,7 +20,10 @@ public enum ErrorCode {
   ALREADY_EXIST_USER_NAME_EXCEPTION(409, "이미 존재하는 이름입니다."),
   ALREADY_EXIST_EMAIL_EXCEPTION(409, "이미 존재하는 이메일입니다."),
   UNAUTHORIZED_MODIFY_EXCEPTION(401, "수정할 권한이 없습니다."),
-  NO_AUTHORIZATION_EXCEPTION(400, "접근 권한이 없습니다");
+  NO_AUTHORIZATION_EXCEPTION(400, "접근 권한이 없습니다"),
+
+  // 게임
+  NOT_FOUND_GAME_EXCEPTION(401, "게임 정보를 찾을 수 없습니다.");
 
   private final int status;
 
