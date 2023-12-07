@@ -14,7 +14,9 @@ public record GetReviewDTO(
         LocalDateTime createdDate,
         LocalDateTime lastModifiedDate
 ) {
+
     public static GetReviewDTO of(String userName, Review review){
+
         return GetReviewDTO.builder()
                 .userName(userName)
                 .gameId(review.getGameId())
@@ -22,6 +24,7 @@ public record GetReviewDTO(
                 .reviewContent(review.getReviewContent())
                 .reviewRank(review.getReviewRank())
                 .createdDate(review.getCreatedTime())
+                .lastModifiedDate(review.getLastModifiedTime())
                 .build();
     }
 }

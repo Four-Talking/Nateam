@@ -26,6 +26,7 @@ public class ReviewController {
             //@AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable("gameId") Long gameId,
             @RequestBody @Valid ReviewRegisterDTO.Request reviewRequest) {
+
         Response reviewResponseDTO = reviewService.registerReview(gameId, reviewRequest);
 
         return ResponseEntity.ok(reviewResponseDTO);
@@ -35,6 +36,7 @@ public class ReviewController {
     public ResponseEntity<GetReviewDTO> getReview(
             //@AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable("reviewId") Long reviewId) {
+
         GetReviewDTO getReviewDTO = reviewService.getReview("khj",reviewId);
 
         return ResponseEntity.ok(getReviewDTO);
