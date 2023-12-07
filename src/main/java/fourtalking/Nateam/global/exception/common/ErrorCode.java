@@ -28,7 +28,8 @@ public enum ErrorCode {
   NOT_FOUND_GAME_EXCEPTION(401, "게임 정보를 찾을 수 없습니다."),
 
   // 리뷰
-  NOT_FOUND_REVIEW_EXCEPTION(401, "리뷰 정보를 찾을 수 없습니다.");
+  NOT_FOUND_REVIEW_EXCEPTION(401, "리뷰 정보를 찾을 수 없습니다."),
+  INCONSISTENCY_USERID_EXCEPTION(401, "유저 아이디가 일치하지 않습니다.");
 
   private final int status;
 
