@@ -1,6 +1,7 @@
 package fourtalking.Nateam.review.entity;
 
 import fourtalking.Nateam.common.BaseLastModifiedTimeEntity;
+import fourtalking.Nateam.review.dto.UpdateReviewDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,4 +38,8 @@ public class Review extends BaseLastModifiedTimeEntity {
     @Column(nullable = false)
     private Long gameId;
 
+    public void modify(UpdateReviewDTO.Request request) {
+        this.reviewContent = request.reviewContent();
+        this.reviewRank = request.reviewRank();
+    }
 }
