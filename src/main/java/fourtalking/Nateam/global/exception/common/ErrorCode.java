@@ -28,7 +28,10 @@ public enum ErrorCode {
   NOT_FOUND_GAME_EXCEPTION(401, "게임 정보를 찾을 수 없습니다."),
 
   // 리뷰
-  NOT_FOUND_REVIEW_EXCEPTION(401, "리뷰 정보를 찾을 수 없습니다.");
+  NOT_FOUND_REVIEW_EXCEPTION(401, "리뷰 정보를 찾을 수 없습니다."),
+
+  // 장바구니
+  NOT_FOUND_CART_IN_GAME_EXCEPTION(401, "장바구니에 해당 게임을 찾을 수 없습니다");
 
   private final int status;
 

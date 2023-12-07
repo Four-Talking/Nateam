@@ -7,6 +7,7 @@ import fourtalking.Nateam.cartgame.service.CartGameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,10 +28,11 @@ public class CartGameController {
   public ResponseEntity<CartUpdateDTO> updateCartGame(
       @PathVariable Long gameId,
       @RequestBody @Valid CartGameRegisterDTO RequestDto
-      //@AuthenticationPrincipal UserDetailsImpl userDetails
+//      @AuthenticationPrincipal UserDetailsImpl userDetails
   ) {
 
-    CartUpdateDTO cartUpdateDTO = cartGameService.updateCartGame(gameId, RequestDto.orderCount(),1L);
+    CartUpdateDTO cartUpdateDTO = cartGameService.updateCartGame(gameId, RequestDto.orderCount(),
+        1L);
 
     return ResponseEntity.ok(cartUpdateDTO);
   }
@@ -39,12 +41,24 @@ public class CartGameController {
   @GetMapping()
   public ResponseEntity<CartsGetDTO> getCartsGame(
 //      @AuthenticationPrincipal UserDetailsImpl userDetails
-  ){
+  ) {
 
     CartsGetDTO cartsGetDTO = cartGameService.getCartsGame(1L);
 
     return ResponseEntity.ok(cartsGetDTO);
 
+  }
+
+  // 장바구니 삭제
+  @DeleteMapping("/{gameId}")
+  public ResponseEntity<CartsGetDTO> deleteCartGame(
+      @PathVariable Long gameId
+//      @AuthenticationPrincipal UserDetailsImpl userDetails
+  ) {
+
+    CartsGetDTO cartsGetDTO = cartGameService.deleteCartGame(gameId, 1L);
+
+    return ResponseEntity.ok(cartsGetDTO);
   }
 
 
