@@ -65,10 +65,15 @@ public class UserService {
             throw new WrongPasswordException();
         }
 
-        response.setHeader("Authorization", jwtUtil.createToken(username));
+        response.setHeader("Authorization", jwtUtil.createToken(username, true));
         return LoginDTO.Response.builder()
                 .message("로그인 성공")
                 .build();
+    }
+
+    public void logout(HttpServletResponse response) {
+
+        response.setHeader("Authorization", jwtUtil.createToken(null, false));
     }
 
     private void savePassword(User user) {

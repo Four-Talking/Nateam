@@ -28,13 +28,14 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String createToken(String username) {
+    public String createToken(String username, boolean forLogin) {
         Date date = new Date();
+        long token_time = forLogin ? TOKEN_TIME : 0;
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(username)
-                        .setExpiration(new Date(date.getTime() + TOKEN_TIME))
+                        .setExpiration(new Date(date.getTime() + token_time))
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
                         .compact();
