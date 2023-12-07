@@ -5,6 +5,7 @@ import fourtalking.Nateam.game.dto.GameRegisterDTO;
 import fourtalking.Nateam.game.entity.Game;
 import fourtalking.Nateam.game.repositroy.GameRepository;
 import fourtalking.Nateam.global.exception.game.GameNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,4 +34,9 @@ public class GameService {
 
         return GameGetDTO.of(game, 4.1, "손창현");
     }
+
+    public List<GameGetDTO> gameGetDTOs() {
+        return gameRepository.findAllGameGetDTOOrderByCreatedTime();
+    }
+
 }
