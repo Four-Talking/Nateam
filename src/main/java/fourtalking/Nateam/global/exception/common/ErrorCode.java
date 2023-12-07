@@ -25,6 +25,8 @@ public enum ErrorCode {
   // 게임
   NOT_FOUND_GAME_EXCEPTION(401, "게임 정보를 찾을 수 없습니다.");
 
+
+
   private final int status;
 
   private final String message;

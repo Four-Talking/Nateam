@@ -20,7 +20,7 @@ public class CartGame {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long carGameId;
+    private Long cartGameId;
 
     @Column(nullable = false)
     private int orderCount;
@@ -33,5 +33,16 @@ public class CartGame {
     @Column(nullable = false)
     private Long gameId;
 
+    public void updateOrderCount(int orderCount){
+        this.orderCount = orderCount;
+    }
+
+    public static CartGame createCartGame(int orderCount, Long userId, Long gameId) {
+        return CartGame.builder()
+            .orderCount(orderCount)
+            .userId(userId)
+            .gameId(gameId)
+            .build();
+    }
 
 }
