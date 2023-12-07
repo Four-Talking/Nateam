@@ -4,9 +4,12 @@ import fourtalking.Nateam.global.exception.user.ExistingUserException;
 import fourtalking.Nateam.global.exception.user.UserNotFoundException;
 import fourtalking.Nateam.global.exception.user.WrongPasswordException;
 import fourtalking.Nateam.global.security.jwt.JwtUtil;
+import fourtalking.Nateam.global.security.userdetails.UserDetailsImpl;
 import fourtalking.Nateam.passwordhistory.entity.PasswordHistory;
 import fourtalking.Nateam.passwordhistory.repository.PasswordHistoryRepository;
 import fourtalking.Nateam.user.constant.UserRole;
+import fourtalking.Nateam.user.dto.EditProfileDTO;
+import fourtalking.Nateam.user.dto.EditProfileDTO.Response;
 import fourtalking.Nateam.user.dto.LoginDTO;
 import fourtalking.Nateam.user.dto.SignupDTO;
 import fourtalking.Nateam.user.entity.User;
@@ -15,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +78,24 @@ public class UserService {
     public void logout(HttpServletResponse response) {
 
         response.setHeader("Authorization", jwtUtil.createToken(null, false));
+    }
+
+    @Transactional
+    public Response editProfile(EditProfileDTO.Request editProfileRequestDTO, UserDetailsImpl userDetails) {
+
+        User user = userRepository.findById(userDetails.getUser().getUserId())
+                .orElseThrow(UserNotFoundException::new);
+
+        if(!passwordEncoder.matches(editProfileRequestDTO.password(), user.getPassword())) {
+            throw new WrongPasswordException();
+        }
+
+        String nickname = editProfileRequestDTO.nickname();
+        String introduction = editProfileRequestDTO.introduction();
+
+        user.editProfile(nickname, introduction);
+
+        return EditProfileDTO.Response.of(user);
     }
 
     private void savePassword(User user) {

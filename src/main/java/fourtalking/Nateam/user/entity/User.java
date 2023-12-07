@@ -38,4 +38,9 @@ public class User {
     @Column(nullable = false)
     private UserRole userRole;
 
+    public void editProfile(String nickname, String userIntroduce) {
+        this.nickname = nickname;
+        this.userIntroduce = userIntroduce;
+    }
+
 }

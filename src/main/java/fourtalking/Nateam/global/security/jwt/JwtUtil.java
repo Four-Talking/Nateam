@@ -1,14 +1,22 @@
 package fourtalking.Nateam.global.security.jwt;
 
+import fourtalking.Nateam.global.exception.jwt.ExpiredJwtTokenException;
+import fourtalking.Nateam.global.exception.jwt.InvalidJwtSignatureException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 public class JwtUtil {
@@ -39,5 +47,36 @@ public class JwtUtil {
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
                         .compact();
+    }
+
+    public String getJwtFromHeader(HttpServletRequest request) {
+        
+        String tokenWithBearer = request.getHeader("AUTHORIZATION");
+        
+        if(StringUtils.hasText(tokenWithBearer) && tokenWithBearer.startsWith(BEARER_PREFIX)) {
+            
+            return tokenWithBearer.substring(7);
+        }
+        return null;
+    }
+
+    public boolean validateToken(String tokenValue) {
+
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(tokenValue);
+            return true;
+        } catch (SecurityException | MalformedJwtException e) {
+            throw new InvalidJwtSignatureException();
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredJwtTokenException();
+        } catch (UnsupportedJwtException | IllegalArgumentException e) {
+        }
+        return false;
+    }
+
+    public Claims getUserInfo(String tokenValue) {
+
+        return Jwts.parserBuilder().setSigningKey(key)
+                .build().parseClaimsJws(tokenValue).getBody();
     }
 }
