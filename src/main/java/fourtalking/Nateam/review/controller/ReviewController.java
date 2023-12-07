@@ -1,10 +1,12 @@
 package fourtalking.Nateam.review.controller;
 
+import fourtalking.Nateam.review.dto.GetAllReviewDTO;
 import fourtalking.Nateam.review.dto.GetReviewDTO;
 import fourtalking.Nateam.review.dto.ReviewRegisterDTO;
 import fourtalking.Nateam.review.dto.ReviewRegisterDTO.Response;
 import fourtalking.Nateam.review.service.ReviewService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,11 +36,21 @@ public class ReviewController {
 
     @GetMapping("/{reviewId}")
     public ResponseEntity<GetReviewDTO> getReview(
-            //@AuthenticationPrincipal UserDetailsImpl userDetails,
+            //
             @PathVariable("reviewId") Long reviewId) {
 
         GetReviewDTO getReviewDTO = reviewService.getReview("khj",reviewId);
 
         return ResponseEntity.ok(getReviewDTO);
+    }
+
+    @GetMapping("/{gameId}/reviews")
+    public ResponseEntity<List<GetAllReviewDTO>> getAllReview(@PathVariable("gameId") Long gameId
+            //, @AuthenticationPrincipal UserDetailsImpl userDetails,
+            ) {
+
+        List<GetAllReviewDTO> getAllReviewDTO = reviewService.getAllReview(gameId);
+
+        return ResponseEntity.ok(getAllReviewDTO);
     }
 }
