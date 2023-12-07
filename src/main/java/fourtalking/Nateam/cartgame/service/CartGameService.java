@@ -93,12 +93,12 @@ public class CartGameService {
     List<CartGame> cartList = findUserCart(userId);
 
     // 장바구니에 없는 게임 삭제 요청 하면 예외 처리
-    if (!gameExistsInCartGame(cartList, gameId)) {
+    if (!ExistsGameInCartGame(cartList, gameId)) {
       throw new CartInGameNotFountException();
     }
 
     int totalPrice = 0;
-    List<CartGameDTO> cartGameDTOs = remainingCartGame(cartList, gameId);
+    List<CartGameDTO> cartGameDTOs = deleteCartGameAndConvertDTO(cartList, gameId);
 
     for (CartGameDTO cartGameDTO : cartGameDTOs) {
       totalPrice += cartGameDTO.eachGameTotalPrice();
@@ -108,7 +108,7 @@ public class CartGameService {
   }
 
 
-  public List<CartGameDTO> remainingCartGame(List<CartGame> cartList, Long gameId) {
+  public List<CartGameDTO> deleteCartGameAndConvertDTO(List<CartGame> cartList, Long gameId) {
 
     List<CartGameDTO> cartGameDTOs = new ArrayList<>();
 
@@ -116,7 +116,7 @@ public class CartGameService {
       Game game = gameService.findById(cartGame.getGameId());
       // 유저가 요청한 게임 삭제
       if (game.getGameId().equals(gameId)) {
-        cartGameRepository.deleteById(cartGame.getCartGameId());
+        cartGameRepository.deleteById(gameId);
         continue;
       }
       CartGameDTO cartGameDTO = CartGameDTO.of(game, cartGame.getOrderCount());
@@ -126,7 +126,7 @@ public class CartGameService {
     return cartGameDTOs;
   }
 
-  public boolean gameExistsInCartGame(List<CartGame> cartList, Long gameId) {
+  public boolean ExistsGameInCartGame(List<CartGame> cartList, Long gameId) {
     for (CartGame cartGame : cartList) {
       if (cartGame.getGameId().equals(gameId)) {
         return true;
