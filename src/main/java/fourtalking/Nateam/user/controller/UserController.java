@@ -25,19 +25,19 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupDTO.Response> signup(@Valid @RequestBody SignupDTO.Request signRequestDTO) {
+    public ResponseEntity<String> signup(@Valid @RequestBody SignupDTO signRequestDTO) {
 
-        SignupDTO.Response signupResponseDTO = userService.signup(signRequestDTO);
+        userService.signup(signRequestDTO);
 
-        return ResponseEntity.ok(signupResponseDTO);
+        return ResponseEntity.ok().body("회원가입 성공");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginDTO.Response> login(@RequestBody LoginDTO.Request loginRequestDTO, HttpServletResponse response) {
+    public ResponseEntity<String> login(@RequestBody LoginDTO.Request loginRequestDTO, HttpServletResponse response) {
 
-        LoginDTO.Response loginResponseDTO = userService.login(loginRequestDTO, response);
+        userService.login(loginRequestDTO, response);
 
-        return ResponseEntity.ok(loginResponseDTO);
+        return ResponseEntity.ok().body("로그인 성공");
     }
 
     @GetMapping("/logout")
