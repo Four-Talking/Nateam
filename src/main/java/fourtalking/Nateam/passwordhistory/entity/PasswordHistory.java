@@ -1,6 +1,5 @@
-package fourtalking.Nateam.user.entity;
+package fourtalking.Nateam.passwordhistory.entity;
 
-import fourtalking.Nateam.user.constant.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,25 +16,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class PasswordHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
-
-    @Column(nullable = false, length = 20)
-    private String userName;
+    private Long passwordHistoryId;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 10)
-    private String nickname;
-
     @Column(nullable = false)
-    private String userIntroduce;
-
-    @Column(nullable = false)
-    private UserRole userRole;
-
+    private Long userId;
 }
