@@ -8,8 +8,8 @@ import lombok.Builder;
 public class EditProfileDTO {
 
     public record Request(
-            @Size String nickname,
-            String introduction,
+            @NotBlank @Size(max = 10) String nickname,
+            @NotBlank @Size(max = 255)String introduction,
             @NotBlank String password) {
 
     }
