@@ -16,7 +16,7 @@ public record SignupDTO(
     public User toEntity(PasswordEncoder passwordEncoder) {
         return User.builder()
                 .userName(userName)
-                .password(passwordEncoder.encode(passwordEncoder.encode(password)))
+                .password(passwordEncoder.encode(password))
                 .nickname(BASIC_PROFILE_NICKNAME)
                 .userIntroduce(BASIC_PROFILE_INTRODUCTION)
                 .userRole(UserRole.USER)
