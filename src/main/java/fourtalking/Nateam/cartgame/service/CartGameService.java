@@ -2,6 +2,7 @@ package fourtalking.Nateam.cartgame.service;
 
 import fourtalking.Nateam.cartgame.dto.CartGameDTO;
 import fourtalking.Nateam.cartgame.dto.CartUpdateDTO;
+import fourtalking.Nateam.cartgame.dto.CartsGetDTO;
 import fourtalking.Nateam.cartgame.entity.CartGame;
 import fourtalking.Nateam.cartgame.repository.CartGameRepository;
 import fourtalking.Nateam.game.entity.Game;
@@ -62,10 +63,28 @@ public class CartGameService {
     cartList.add(savedCartGame);
   }
 
+  @Transactional(readOnly = true)
+  public CartsGetDTO getCartsGame(long userId) {
 
-  public Game findById(Long gameId) {
-    return gameService.findById(gameId);
+    // 로그인중 유저 장바구니 목록 가져오기
+    List<CartGame> cartList = findUserCart(userId);
+
+    int totalPrice = 0;
+    List<CartGameDTO> cartGameDTOs = new ArrayList<>();
+
+    for (CartGame cartGame : cartList) {
+      Game game = gameService.findById(cartGame.getGameId());
+
+      CartGameDTO cartGameDTO = CartGameDTO.of(game, cartGame.getOrderCount());
+      cartGameDTOs.add(cartGameDTO);
+      totalPrice += cartGameDTO.eachGameTotalPrice();
+    }
+
+    return CartsGetDTO.of(cartGameDTOs, totalPrice);
   }
+
+
+
 
 
   public List<CartGame> findUserCart(Long userId) {
