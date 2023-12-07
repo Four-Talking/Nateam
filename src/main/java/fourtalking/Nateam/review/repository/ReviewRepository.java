@@ -16,7 +16,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             + "inner join User u on r.userId = u.userId "
             + "where r.gameId = ?1 "
             + "order by r.createdTime desc")
-    List<GetAllReviewDTO> findAllReviewByGame_Id(Long gameId);
+    List<GetAllReviewDTO> findAllReviewByGameId(Long gameId);
 }
 
 

@@ -37,7 +37,7 @@ public class ReviewService {
 
     public List<GetAllReviewDTO> getAllReview(Long gameId) {
 
-        return reviewRepository.findAllReviewByGame_Id(gameId);
+        return reviewRepository.findAllReviewByGameId(gameId);
     }
 }
 
