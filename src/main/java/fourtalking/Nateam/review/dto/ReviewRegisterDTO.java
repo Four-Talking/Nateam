@@ -21,7 +21,6 @@ public class ReviewRegisterDTO{
                     .reviewRank(reviewRank)
                     .build();
         }
-
     }
 
     @Builder
