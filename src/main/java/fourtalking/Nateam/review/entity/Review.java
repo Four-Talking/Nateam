@@ -38,9 +38,8 @@ public class Review extends BaseLastModifiedTimeEntity {
     @Column(nullable = false)
     private Long gameId;
 
-    public Review modify(UpdateReviewDTO.Request request) {
+    public void modify(UpdateReviewDTO.Request request) {
         this.reviewContent = request.reviewContent();
         this.reviewRank = request.reviewRank();
-        return this;
     }
 }
