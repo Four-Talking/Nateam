@@ -34,14 +34,3 @@ public class UpdateReviewDTO {
         }
     }
 }
-
-//    public static PassDto from(Pass pass){
-//        return new PassDto(
-//                pass.getPassId(),
-//                pass.getName(),
-//                pass.getCount(),
-//                pass.getPrice(),
-//                pass.getStartedDay(),
-//                pass.getEndedDay()
-//        );
-//    }
