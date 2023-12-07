@@ -22,6 +22,7 @@ public enum ErrorCode {
   UNAUTHORIZED_MODIFY_EXCEPTION(401, "수정할 권한이 없습니다."),
   NO_AUTHORIZATION_EXCEPTION(400, "접근 권한이 없습니다"),
   WRONG_PASSWORD_EXCEPTION(400, "틀린 비밀번호입니다."),
+  INVALID_USER_ID_AND_PASSWORD(400, "입력하신 아이디와 비밀번호에 일치하는 계정이 없습니다."),
 
   // 게임
   NOT_FOUND_GAME_EXCEPTION(401, "게임 정보를 찾을 수 없습니다."),

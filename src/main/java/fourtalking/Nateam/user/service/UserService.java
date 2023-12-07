@@ -1,6 +1,7 @@
 package fourtalking.Nateam.user.service;
 
 import fourtalking.Nateam.global.exception.user.ExistingUserException;
+import fourtalking.Nateam.global.exception.user.InvalidUserIdAndPasswordException;
 import fourtalking.Nateam.global.exception.user.UserNotFoundException;
 import fourtalking.Nateam.global.exception.user.WrongPasswordException;
 import fourtalking.Nateam.global.security.jwt.JwtUtil;
@@ -63,10 +64,11 @@ public class UserService {
         String username = loginRequestDTO.userName();
         String password = loginRequestDTO.password();
 
-        User user = userRepository.findByUserName(username).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByUserName(username)
+                .orElseThrow(InvalidUserIdAndPasswordException::new);
 
-        if(!passwordEncoder.matches(password, user.getPassword())) {
-            throw new WrongPasswordException();
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new InvalidUserIdAndPasswordException();
         }
 
         response.setHeader("Authorization", jwtUtil.createToken(username, true));
@@ -81,12 +83,13 @@ public class UserService {
     }
 
     @Transactional
-    public Response editProfile(EditProfileDTO.Request editProfileRequestDTO, UserDetailsImpl userDetails) {
+    public Response editProfile(EditProfileDTO.Request editProfileRequestDTO,
+            UserDetailsImpl userDetails) {
 
         User user = userRepository.findById(userDetails.getUser().getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
-        if(!passwordEncoder.matches(editProfileRequestDTO.password(), user.getPassword())) {
+        if (!passwordEncoder.matches(editProfileRequestDTO.password(), user.getPassword())) {
             throw new WrongPasswordException();
         }
 
