@@ -1,7 +1,9 @@
 package fourtalking.Nateam.user.controller;
 
+import fourtalking.Nateam.user.dto.LoginDTO;
 import fourtalking.Nateam.user.dto.SignupDTO;
 import fourtalking.Nateam.user.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +25,13 @@ public class UserController {
         SignupDTO.Response signupResponseDTO = userService.signup(signRequestDTO);
 
         return ResponseEntity.ok(signupResponseDTO);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginDTO.Response> login(@RequestBody LoginDTO.Request loginRequestDTO, HttpServletResponse response) {
+
+        LoginDTO.Response loginResponseDTO = userService.login(loginRequestDTO, response);
+
+        return ResponseEntity.ok(loginResponseDTO);
     }
 }

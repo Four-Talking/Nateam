@@ -1,12 +1,17 @@
 package fourtalking.Nateam.user.service;
 
 import fourtalking.Nateam.global.exception.user.ExistingUserException;
+import fourtalking.Nateam.global.exception.user.UserNotFoundException;
+import fourtalking.Nateam.global.exception.user.WrongPasswordException;
+import fourtalking.Nateam.global.security.jwt.JwtUtil;
 import fourtalking.Nateam.passwordhistory.entity.PasswordHistory;
 import fourtalking.Nateam.passwordhistory.repository.PasswordHistoryRepository;
 import fourtalking.Nateam.user.constant.UserRole;
+import fourtalking.Nateam.user.dto.LoginDTO;
 import fourtalking.Nateam.user.dto.SignupDTO;
 import fourtalking.Nateam.user.entity.User;
 import fourtalking.Nateam.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +23,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final PasswordHistoryRepository passwordHistoryRepository;
+    private final JwtUtil jwtUtil;
 
     private static final String BASIC_PROFILE_NICKNAME = "nick";
     private static final String BASIC_PROFILE_INTRODUCTION = "Hello World!";
@@ -45,6 +51,23 @@ public class UserService {
 
         return SignupDTO.Response.builder()
                 .message("회원가입 성공")
+                .build();
+    }
+
+    public LoginDTO.Response login(LoginDTO.Request loginRequestDTO, HttpServletResponse response) {
+
+        String username = loginRequestDTO.userName();
+        String password = loginRequestDTO.password();
+
+        User user = userRepository.findByUserName(username).orElseThrow(UserNotFoundException::new);
+
+        if(!passwordEncoder.matches(password, user.getPassword())) {
+            throw new WrongPasswordException();
+        }
+
+        response.setHeader("Authorization", jwtUtil.createToken(username));
+        return LoginDTO.Response.builder()
+                .message("로그인 성공")
                 .build();
     }
 
