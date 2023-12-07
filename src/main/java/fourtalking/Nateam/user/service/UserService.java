@@ -88,6 +88,11 @@ public class UserService {
         return EditProfileDTO.Response.of(user);
     }
 
+    public User findById(Long userId) {
+
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    }
+
     private void savePasswordHistory(User user) {
 
         PasswordHistory passwordHistory =
