@@ -8,7 +8,6 @@ import fourtalking.Nateam.global.security.jwt.JwtUtil;
 import fourtalking.Nateam.global.security.userdetails.UserDetailsImpl;
 import fourtalking.Nateam.passwordhistory.entity.PasswordHistory;
 import fourtalking.Nateam.passwordhistory.repository.PasswordHistoryRepository;
-import fourtalking.Nateam.user.constant.UserRole;
 import fourtalking.Nateam.user.dto.EditProfileDTO;
 import fourtalking.Nateam.user.dto.EditProfileDTO.Response;
 import fourtalking.Nateam.user.dto.LoginDTO;
@@ -26,40 +25,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
+
     private final UserRepository userRepository;
+
     private final PasswordHistoryRepository passwordHistoryRepository;
+
     private final JwtUtil jwtUtil;
 
-    private static final String BASIC_PROFILE_NICKNAME = "nick";
-    private static final String BASIC_PROFILE_INTRODUCTION = "Hello World!";
 
-    public SignupDTO.Response signup(SignupDTO.Request signRequestDTO) {
+    public void signup(SignupDTO signRequestDTO) {
 
-        String userName = signRequestDTO.userName();
-        String password = signRequestDTO.password();
+        validateExistingUser(signRequestDTO.userName());
 
-        if (userRepository.findByUserName(userName).isPresent()) {
-            throw new ExistingUserException();
-        }
-
-        User user = User.builder()
-                .userName(userName)
-                .password(passwordEncoder.encode(password))
-                .nickname(BASIC_PROFILE_NICKNAME)
-                .userIntroduce(BASIC_PROFILE_INTRODUCTION)
-                .userRole(UserRole.USER)
-                .build();
+        User user = signRequestDTO.toEntity(passwordEncoder);
 
         userRepository.save(user);
-
-        savePassword(user);
-
-        return SignupDTO.Response.builder()
-                .message("회원가입 성공")
-                .build();
+        savePasswordHistory(user);
     }
 
-    public LoginDTO.Response login(LoginDTO.Request loginRequestDTO, HttpServletResponse response) {
+    private void validateExistingUser(String userName) {
+        userRepository.findByUserName(userName).ifPresent(user -> {
+                    throw new ExistingUserException();
+                });
+    }
+
+    public void login(LoginDTO.Request loginRequestDTO, HttpServletResponse response) {
 
         String username = loginRequestDTO.userName();
         String password = loginRequestDTO.password();
@@ -72,9 +62,6 @@ public class UserService {
         }
 
         response.setHeader("Authorization", jwtUtil.createToken(username, true));
-        return LoginDTO.Response.builder()
-                .message("로그인 성공")
-                .build();
     }
 
     public void logout(HttpServletResponse response) {
@@ -101,12 +88,11 @@ public class UserService {
         return EditProfileDTO.Response.of(user);
     }
 
-    private void savePassword(User user) {
+    private void savePasswordHistory(User user) {
 
-        PasswordHistory password = PasswordHistory.builder()
-                .password(user.getPassword())
-                .userId(user.getUserId())
-                .build();
-        passwordHistoryRepository.save(password);
+        PasswordHistory passwordHistory =
+                PasswordHistory.createPasswordHistory(user.getPassword(), user.getUserId());
+
+        passwordHistoryRepository.save(passwordHistory);
     }
 }

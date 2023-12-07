@@ -27,4 +27,11 @@ public class PasswordHistory {
 
     @Column(nullable = false)
     private Long userId;
+
+    public static PasswordHistory createPasswordHistory(String password, Long userId) {
+        return PasswordHistory.builder()
+                .password(password)
+                .userId(userId)
+                .build();
+    }
 }
