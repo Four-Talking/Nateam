@@ -29,6 +29,8 @@ public enum ErrorCode {
   NOT_FOUND_REVIEW_EXCEPTION(401, "리뷰 정보를 찾을 수 없습니다.");
 
 
+
+
   private final int status;
 
   private final String message;
