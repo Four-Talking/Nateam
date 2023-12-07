@@ -50,6 +50,12 @@ public class ReviewService {
 
         return UpdateReviewDTO.Response.of(review, request);
     }
+
+    @Transactional
+    public void deleteReview(Long reviewId) {
+
+        reviewRepository.deleteById(reviewId);
+    }
 }
 
 
