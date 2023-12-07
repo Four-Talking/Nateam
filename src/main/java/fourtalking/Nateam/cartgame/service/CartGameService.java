@@ -1,11 +1,12 @@
 package fourtalking.Nateam.cartgame.service;
 
-import fourtalking.Nateam.cartgame.dto.CartGameRegisterDTO;
-import fourtalking.Nateam.cartgame.dto.CartGameRegisterDTO.CartResponse;
+import fourtalking.Nateam.cartgame.dto.CartGameDTO;
+import fourtalking.Nateam.cartgame.dto.CartUpdateDTO;
 import fourtalking.Nateam.cartgame.entity.CartGame;
 import fourtalking.Nateam.cartgame.repository.CartGameRepository;
 import fourtalking.Nateam.game.entity.Game;
 import fourtalking.Nateam.game.service.GameService;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class CartGameService {
   private final GameService gameService;
 
   @Transactional
-  public List<CartResponse> updateCartGame(Long gameId, int orderCount, Long userId) {
+  public CartUpdateDTO updateCartGame(Long gameId, int orderCount, Long userId) {
 
     // 로그인중 유저 장바구니 목록 가져오기
     List<CartGame> cartList = findUserCart(userId);
@@ -28,10 +29,17 @@ public class CartGameService {
       addCartGame(cartList, orderCount, userId, gameId);
     }
 
-    return cartList.stream().map(cartGame ->
-            CartGameRegisterDTO.CartResponse.of(
-                findById(cartGame.getGameId()), cartGame.getOrderCount(), "seok"))
-        .toList();
+    int totalPrice = 0;
+    List<CartGameDTO> cartGameDTOs = new ArrayList<>();
+    for (CartGame cartGame : cartList) {
+      Game game = gameService.findById(cartGame.getGameId());
+
+      CartGameDTO cartGameDTO = CartGameDTO.of(game, cartGame.getOrderCount());
+      cartGameDTOs.add(cartGameDTO);
+      totalPrice += cartGameDTO.eachGameTotalPrice();
+    }
+
+    return CartUpdateDTO.of(cartGameDTOs, totalPrice);
   }
 
   private boolean existSameGameThenUpdateOrderCount(List<CartGame> cartList, int orderCount,
