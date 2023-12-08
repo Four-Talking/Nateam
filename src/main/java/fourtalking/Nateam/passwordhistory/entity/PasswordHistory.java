@@ -1,5 +1,6 @@
 package fourtalking.Nateam.passwordhistory.entity;
 
+import fourtalking.Nateam.common.BaseCreatedTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PasswordHistory {
+public class PasswordHistory extends BaseCreatedTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
