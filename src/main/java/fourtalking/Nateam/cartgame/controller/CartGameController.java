@@ -4,9 +4,11 @@ import fourtalking.Nateam.cartgame.dto.CartGameRegisterDTO;
 import fourtalking.Nateam.cartgame.dto.CartUpdateDTO;
 import fourtalking.Nateam.cartgame.dto.CartsGetDTO;
 import fourtalking.Nateam.cartgame.service.CartGameService;
+import fourtalking.Nateam.global.security.userdetails.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +29,12 @@ public class CartGameController {
   @PutMapping("/{gameId}")
   public ResponseEntity<CartUpdateDTO> updateCartGame(
       @PathVariable Long gameId,
-      @RequestBody @Valid CartGameRegisterDTO RequestDto
-//      @AuthenticationPrincipal UserDetailsImpl userDetails
+      @RequestBody @Valid CartGameRegisterDTO RequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails
   ) {
 
     CartUpdateDTO cartUpdateDTO = cartGameService.updateCartGame(gameId, RequestDto.orderCount(),
-        1L);
+        userDetails.getUser().getUserId());
 
     return ResponseEntity.ok(cartUpdateDTO);
   }
@@ -40,10 +42,10 @@ public class CartGameController {
   // 장바구니 조회
   @GetMapping()
   public ResponseEntity<CartsGetDTO> getCartsGame(
-//      @AuthenticationPrincipal UserDetailsImpl userDetails
+      @AuthenticationPrincipal UserDetailsImpl userDetails
   ) {
 
-    CartsGetDTO cartsGetDTO = cartGameService.getCartsGame(1L);
+    CartsGetDTO cartsGetDTO = cartGameService.getCartsGame(userDetails.getUser().getUserId());
 
     return ResponseEntity.ok(cartsGetDTO);
 
@@ -52,11 +54,11 @@ public class CartGameController {
   // 장바구니 삭제
   @DeleteMapping("/{gameId}")
   public ResponseEntity<CartsGetDTO> deleteCartGame(
-      @PathVariable Long gameId
-//      @AuthenticationPrincipal UserDetailsImpl userDetails
+      @PathVariable Long gameId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails
   ) {
 
-    CartsGetDTO cartsGetDTO = cartGameService.deleteCartGame(gameId, 1L);
+    CartsGetDTO cartsGetDTO = cartGameService.deleteCartGame(gameId, userDetails.getUser().getUserId());
 
     return ResponseEntity.ok(cartsGetDTO);
   }
