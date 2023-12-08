@@ -1,6 +1,7 @@
 package fourtalking.Nateam.user.controller;
 
 import fourtalking.Nateam.global.security.userdetails.UserDetailsImpl;
+import fourtalking.Nateam.user.dto.ChangePasswordDTO;
 import fourtalking.Nateam.user.dto.EditProfileDTO;
 import fourtalking.Nateam.user.dto.LoginDTO;
 import fourtalking.Nateam.user.dto.SignupDTO;
@@ -55,5 +56,14 @@ public class UserController {
         EditProfileDTO.Response editProfileResponseDTO = userService.editProfile(editProfileRequestDTO, userDetails);
 
         return ResponseEntity.ok(editProfileResponseDTO);
+    }
+
+    @PatchMapping("/password")
+    public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        userService.changePassword(changePasswordDTO, userDetails.getUser().getUserId());
+
+        return ResponseEntity.ok().body("비밀번호 변경 성공");
     }
 }

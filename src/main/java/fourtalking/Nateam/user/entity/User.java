@@ -43,4 +43,8 @@ public class User {
         this.userIntroduce = userIntroduce;
     }
 
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
 }
