@@ -20,5 +20,4 @@ public record CartGameDTO(
         .eachGameTotalPrice(game.getGamePrice() * orderCount)
         .build();
   }
-
 }
