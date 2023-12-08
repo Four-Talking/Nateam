@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 public record SignupDTO(
         @Pattern(regexp = "^[a-z0-9]{4,10}$") String userName,
-        @Pattern(regexp = "^[A-Za-z0-9]{8,15}$") String password
+        @Pattern(regexp = "^[a-zA-Z0-9!@#$%^&*?_]{8,15}$") String password
 ) {
 
     private static final String BASIC_PROFILE_NICKNAME = "nick";
