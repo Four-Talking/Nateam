@@ -25,14 +25,15 @@ public class GameRegisterDTO {
 
     @Builder
     public record Response(String gameName, String gameIntroduction, int gamePrice,
-                           double gameReviewRank, LocalDateTime createdDate) {
+                           double gameReviewRank, String userName,LocalDateTime createdDate) {
 
-        public static Response of(Game game, double gameReviewRank) {
+        public static Response of(Game game, double gameReviewRank, String userName) {
             return Response.builder()
                     .gameName(game.getGameName())
                     .gameIntroduction(game.getGameIntroduction())
                     .gamePrice(game.getGamePrice())
                     .gameReviewRank(gameReviewRank)
+                    .userName(userName)
                     .createdDate(game.getCreatedTime())
                     .build();
         }

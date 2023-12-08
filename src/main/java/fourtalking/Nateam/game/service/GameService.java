@@ -34,9 +34,10 @@ public class GameService {
     public GameRegisterDTO.Response registerGame(GameRegisterDTO.Request gameRequestDTO, Long userId) {
 
         Game savedGame = gameRepository.save(gameRequestDTO.toEntity(userId));
+        User user = userService.findById(userId);
         double defaultReviewRank = 0;
 
-        return GameRegisterDTO.Response.of(savedGame, defaultReviewRank);
+        return GameRegisterDTO.Response.of(savedGame, defaultReviewRank, user.getUserName());
     }
 
     public GameGetDTO getGameById(Long gameId) {
