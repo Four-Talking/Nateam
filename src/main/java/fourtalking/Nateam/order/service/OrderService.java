@@ -5,6 +5,7 @@ import fourtalking.Nateam.cartgame.service.CartGameService;
 import fourtalking.Nateam.game.entity.Game;
 import fourtalking.Nateam.game.service.GameService;
 import fourtalking.Nateam.global.exception.order.OrderNotFoundException;
+import fourtalking.Nateam.global.exception.review.InconsistencyUserIdException;
 import fourtalking.Nateam.order.dto.OrderGameDTO;
 import fourtalking.Nateam.order.dto.OrderGetDTO;
 import fourtalking.Nateam.order.dto.OrderRegisterDTO;
@@ -13,6 +14,7 @@ import fourtalking.Nateam.order.repository.OrderRepository;
 import fourtalking.Nateam.orderGame.entity.OrderGame;
 import fourtalking.Nateam.orderGame.orderGameRepository.OrderGameRepository;
 import fourtalking.Nateam.user.entity.User;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -103,4 +105,18 @@ public class OrderService {
 
     return OrderGetDTO.of(orders, userName, orderGameDTOList);
   }
+
+    @Transactional
+    public void deleteOrder(Long userId, Long orderId) {
+
+      Orders orders = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+
+      if (!userId.equals(orders.getUserId())) {
+
+        throw new InconsistencyUserIdException();
+      }
+
+      orderGameRepository.deleteById(orderId);
+      orderRepository.deleteById(orderId);
+    }
 }
