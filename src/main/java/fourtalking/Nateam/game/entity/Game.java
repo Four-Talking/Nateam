@@ -36,4 +36,9 @@ public class Game extends BaseLastModifiedTimeEntity {
     @Column(nullable = false)
     private Long userId;
 
+    public void modifyGame(String gameName, String gameIntroduction, int gamePrice) {
+        this.gameName = gameName;
+        this.gameIntroduction = gameIntroduction;
+        this.gamePrice = gamePrice;
+    }
 }
