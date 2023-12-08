@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CartGameRepository extends JpaRepository<CartGame,Long> {
 
   List<CartGame> findCartsByUserId(Long userId);
+
+  void deleteAllByUserId(Long userId);
 }

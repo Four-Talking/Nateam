@@ -140,4 +140,8 @@ public class CartGameService {
     return cartGameRepository.findCartsByUserId(userId);
   }
 
+  public void allDeleteCart(Long userId){
+    cartGameRepository.deleteAllByUserId(userId);
+  }
+
 }
