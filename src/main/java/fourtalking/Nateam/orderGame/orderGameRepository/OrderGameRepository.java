@@ -8,5 +8,5 @@ public interface OrderGameRepository extends JpaRepository<OrderGame,Long> {
 
   List<OrderGame> findAllByOrderId(Long orderId);
 
-  void deleteByAllByOrderId(Long orderId);
+  void deleteAllByOrderId(Long orderId);
 }
