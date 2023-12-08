@@ -12,7 +12,6 @@ import fourtalking.Nateam.order.dto.OrderRegisterDTO;
 import fourtalking.Nateam.order.entity.Orders;
 import fourtalking.Nateam.order.repository.OrderRepository;
 import fourtalking.Nateam.orderGame.entity.OrderGame;
-import fourtalking.Nateam.orderGame.orderGameRepository.OrderGameRepository;
 import fourtalking.Nateam.orderGame.service.OrderGameService;
 import fourtalking.Nateam.user.entity.User;
 import jakarta.transaction.Transactional;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -120,7 +118,7 @@ public class OrderService {
         throw new InconsistencyUserIdException();
       }
 
-      orderGameRepository.deleteByAllByOrderId(orderId);
+      orderGameService.deleteAllByOrderId(orderId);
       orderRepository.deleteById(orderId);
     }
 }

@@ -23,4 +23,8 @@ public class OrderGameService {
 
   }
 
+  public void deleteAllByOrderId(Long orderId) {
+
+    orderGameRepository.deleteAllByOrderId(orderId);
+  }
 }
