@@ -29,7 +29,7 @@ public enum ErrorCode {
 
   // 리뷰
   NOT_FOUND_REVIEW_EXCEPTION(401, "리뷰 정보를 찾을 수 없습니다."),
-  INCONSISTENCY_USERID_EXCEPTION(401, "유저 아이디가 일치하지 않습니다.");
+  INCONSISTENCY_USERID_EXCEPTION(401, "유저 아이디가 일치하지 않습니다."),
 
   // 장바구니
   NOT_FOUND_CART_IN_GAME_EXCEPTION(401, "장바구니에 해당 게임을 찾을 수 없습니다");
