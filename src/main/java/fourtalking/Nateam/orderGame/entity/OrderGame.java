@@ -18,19 +18,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderGame {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long orderGameId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long orderGameId;
 
-    @Column(nullable = false)
-    private int orderCount;
+  @Column(nullable = false)
+  private int orderCount;
 
-    // JPA의 연관관계를 이용하지 않는 코드, 추후에 연관관계를 위한 리팩토링 가능성 있음
-    @Column(nullable = false)
-    private Long orderId;
+  // JPA의 연관관계를 이용하지 않는 코드, 추후에 연관관계를 위한 리팩토링 가능성 있음
+  @Column(nullable = false)
+  private Long orderId;
 
-    // JPA의 연관관계를 이용하지 않는 코드, 추후에 연관관계를 위한 리팩토링 가능성 있음
-    @Column(nullable = false)
-    private Long gameId;
+  // JPA의 연관관계를 이용하지 않는 코드, 추후에 연관관계를 위한 리팩토링 가능성 있음
+  @Column(nullable = false)
+  private Long gameId;
+
+  public static OrderGame createOrderGame(int oderCount, Long gameId, Long orderId) {
+
+    return OrderGame.builder()
+        .orderCount(oderCount)
+        .orderId(orderId)
+        .gameId(gameId)
+        .build();
+  }
 
 }

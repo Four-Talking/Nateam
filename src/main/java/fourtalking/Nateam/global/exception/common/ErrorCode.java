@@ -32,7 +32,10 @@ public enum ErrorCode {
   INCONSISTENCY_USERID_EXCEPTION(401, "유저 아이디가 일치하지 않습니다."),
 
   // 장바구니
-  NOT_FOUND_CART_IN_GAME_EXCEPTION(401, "장바구니에 해당 게임을 찾을 수 없습니다");
+  NOT_FOUND_CART_IN_GAME_EXCEPTION(401, "장바구니에 해당 게임을 찾을 수 없습니다"),
+
+  // 주문
+  NOT_FOUND_ORDER_EXCEPTION(401, "해당 주문을 찾을 수 없습니다.");
 
   private final int status;
 

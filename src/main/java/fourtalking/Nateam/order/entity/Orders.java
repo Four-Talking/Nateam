@@ -20,15 +20,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Orders extends BaseCreatedTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long orderId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long orderId;
 
-    @Column(nullable = false)
-    private int orderTotalPrice;
+  @Column(nullable = false)
+  private int orderTotalPrice;
 
-    // JPA의 연관관계를 이용하지 않는 코드, 추후에 연관관계를 위한 리팩토링 가능성 있음
-    @Column(nullable = false)
-    private Long userId;
+  // JPA의 연관관계를 이용하지 않는 코드, 추후에 연관관계를 위한 리팩토링 가능성 있음
+  @Column(nullable = false)
+  private Long userId;
+
+  public static Orders createOrders(int orderTotalPrice, Long userId) {
+    return Orders.builder()
+        .orderTotalPrice(orderTotalPrice)
+        .userId(userId)
+        .build();
+  }
 
 }
