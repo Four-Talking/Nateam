@@ -31,19 +31,21 @@ public class GameService {
         return gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
     }
 
-    public GameRegisterDTO.Response registerGame(GameRegisterDTO.Request gameRequestDTO) {
+    public GameRegisterDTO.Response registerGame(GameRegisterDTO.Request gameRequestDTO, Long userId) {
 
-        Game savedGame = gameRepository.save(gameRequestDTO.toEntity());
-        double gameReviewRank = 5.00;
+        Game savedGame = gameRepository.save(gameRequestDTO.toEntity(userId));
+        double defaultReviewRank = 0;
 
-        return GameRegisterDTO.Response.of(savedGame, gameReviewRank);
+        return GameRegisterDTO.Response.of(savedGame, defaultReviewRank);
     }
 
     public GameGetDTO getGameById(Long gameId) {
 
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
+        User user = userService.findById(game.getUserId());
+        double gameReviewRank = calculateGameRank(game.getGameId());
 
-        return GameGetDTO.of(game, 4.1, "손창현");
+        return GameGetDTO.of(game, gameReviewRank, user.getUserName());
     }
 
     public List<GameGetDTO> gameGetDTOs() {
