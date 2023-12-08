@@ -1,7 +1,6 @@
 package fourtalking.Nateam.review.dto;
 
 import fourtalking.Nateam.review.entity.Review;
-import fourtalking.Nateam.user.entity.User;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -27,10 +26,10 @@ public class ReviewRegisterDTO{
     @Builder
     public record Response(Long gameId, String userName, Long reviewId, String reviewContent, int reviewRank, LocalDateTime createdDate) {
 
-        public static Response of(User user, Review review) {
+        public static Response of(String userName, Review review) {
             return Response.builder()
                     .gameId(review.getGameId())
-                    .userName(user.getUserName())
+                    .userName(userName)
                     .reviewId(review.getReviewId())
                     .reviewContent(review.getReviewContent())
                     .reviewRank(review.getReviewRank())
