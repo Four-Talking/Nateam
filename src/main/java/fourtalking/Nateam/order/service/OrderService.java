@@ -116,7 +116,7 @@ public class OrderService {
         throw new InconsistencyUserIdException();
       }
 
-      orderGameRepository.deleteById(orderId);
+      orderGameRepository.deleteByAllByOrderId(orderId);
       orderRepository.deleteById(orderId);
     }
 }

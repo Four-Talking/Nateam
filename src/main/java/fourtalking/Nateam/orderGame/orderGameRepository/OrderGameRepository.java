@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface OrderGameRepository extends JpaRepository<OrderGame,Long> {
 
   List<OrderGame> findAllByOrderId(Long orderId);
+
+  void deleteByAllByOrderId(Long orderId);
 }
