@@ -29,17 +29,17 @@ public class ReviewService {
     public ReviewRegisterDTO.Response registerReview(Long userId, Long gameId, ReviewRegisterDTO.Request reviewRequest) {
 
         Review review = reviewRepository.save(reviewRequest.toEntity(userId, gameId));
-        User user = userService.findById(review.getUserId());
+        String userName = getUserName(review);
 
-        return ReviewRegisterDTO.Response.of(user, review);
+        return ReviewRegisterDTO.Response.of(userName, review);
     }
 
     public GetReviewDTO getReview(Long reviewId) {
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
-        User user = userService.findById(review.getUserId());
+        String userName = getUserName(review);
 
-        return GetReviewDTO.of(user, review);
+        return GetReviewDTO.of(userName, review);
     }
 
     public List<GetAllReviewDTO> getAllReview(Long gameId) {
@@ -52,7 +52,7 @@ public class ReviewService {
             UpdateReviewDTO.Request request) {
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
-        User user = userService.findById(review.getUserId());
+        String userName = getUserName(review);
 
         if(!userId.equals(review.getUserId())){
             throw new InconsistencyUserIdException();
@@ -60,7 +60,7 @@ public class ReviewService {
 
         review.modify(request);
 
-        return UpdateReviewDTO.Response.of(user, review, request);
+        return UpdateReviewDTO.Response.of(userName, review, request);
     }
 
     @Transactional
@@ -73,6 +73,13 @@ public class ReviewService {
         }
 
         reviewRepository.deleteById(reviewId);
+    }
+
+    private String getUserName(Review review){
+
+        User user = userService.findById(review.getUserId());
+
+        return user.getUserName();
     }
 }
 

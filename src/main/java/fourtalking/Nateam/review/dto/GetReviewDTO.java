@@ -1,7 +1,6 @@
 package fourtalking.Nateam.review.dto;
 
 import fourtalking.Nateam.review.entity.Review;
-import fourtalking.Nateam.user.entity.User;
 import java.time.LocalDateTime;
 import lombok.Builder;
 
@@ -16,11 +15,11 @@ public record GetReviewDTO(
         LocalDateTime lastModifiedDate
 ) {
 
-    public static GetReviewDTO of(User user, Review review){
+    public static GetReviewDTO of(String userName, Review review){
 
         return GetReviewDTO.builder()
                 .gameId(review.getGameId())
-                .userName(user.getUserName())
+                .userName(userName)
                 .reviewId(review.getReviewId())
                 .reviewContent(review.getReviewContent())
                 .reviewRank(review.getReviewRank())
