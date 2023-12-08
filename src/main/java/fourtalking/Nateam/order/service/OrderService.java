@@ -13,12 +13,14 @@ import fourtalking.Nateam.order.entity.Orders;
 import fourtalking.Nateam.order.repository.OrderRepository;
 import fourtalking.Nateam.orderGame.entity.OrderGame;
 import fourtalking.Nateam.orderGame.orderGameRepository.OrderGameRepository;
+import fourtalking.Nateam.orderGame.service.OrderGameService;
 import fourtalking.Nateam.user.entity.User;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +28,8 @@ public class OrderService {
 
   private final GameService gameService;
   private final CartGameService cartGameService;
+  private final OrderGameService orderGameService;
   private final OrderRepository orderRepository;
-  private final OrderGameRepository orderGameRepository;
 
   public Orders findById(Long orderId) {
 
@@ -35,6 +37,7 @@ public class OrderService {
   }
 
   // 주문하기 서비스
+ @Transactional
   public OrderRegisterDTO registerOrder(User user) {
 
     //로그인중 유저 장바구니 정보 가져오기
@@ -52,6 +55,7 @@ public class OrderService {
     List<OrderGameDTO> orderGameList = CartGameToOrderGameDTO(cartGameList);
 
     // 나중 리렉토링으로 카트게임 서비스에서 장바구니 삭제 메소드 추가
+    cartGameService.allDeleteCart(user.getUserId());
 
     return OrderRegisterDTO.of(orders, user.getUserName(), orderGameList);
 
@@ -71,7 +75,7 @@ public class OrderService {
       OrderGame orderGame = OrderGame.createOrderGame(cartGame.getOrderCount(),
           cartGame.getGameId(), orderId);
 
-      orderGameRepository.save(orderGame);
+      orderGameService.saveOrderGame(orderGame);
     }
   }
 
@@ -92,7 +96,7 @@ public class OrderService {
 
     Orders orders = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
 
-    List<OrderGame> orderGameList = orderGameRepository.findAllByOrderId(orderId);
+    List<OrderGame> orderGameList = orderGameService.findAllByOrderId(orderId);
 
     List<OrderGameDTO> orderGameDTOList = new ArrayList<>();
 
