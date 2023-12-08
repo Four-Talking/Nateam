@@ -96,4 +96,11 @@ public class GameService {
         return sumReviewRank / reviews.size();
     }
 
+    public void deleteGame(Long gameId, Long userId) {
+
+        Game game = findById(gameId);
+        validateModifyGameAuthorization(userId, game.getUserId());
+
+        gameRepository.deleteById(gameId);
+    }
 }
