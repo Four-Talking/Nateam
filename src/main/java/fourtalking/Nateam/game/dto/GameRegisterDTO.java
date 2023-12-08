@@ -13,12 +13,12 @@ public class GameRegisterDTO {
             @NotBlank @Size String gameName,
             @NotBlank @Size String gameIntroduction,
             @Positive int gamePrice) {
-        public Game toEntity() {
+        public Game toEntity(Long userId) {
             return Game.builder()
                     .gameName(gameName)
                     .gameIntroduction(gameIntroduction)
                     .gamePrice(gamePrice)
-                    .userId(1L)
+                    .userId(userId)
                     .build();
         }
     }

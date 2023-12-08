@@ -27,8 +27,11 @@ public class GameController {
     private final GameService gameService;
 
     @PostMapping
-    public ResponseEntity<?> registerGame(@RequestBody @Valid GameRegisterDTO.Request gameRequestDTO) {
-        Response gameResponseDTO = gameService.registerGame(gameRequestDTO);
+    public ResponseEntity<?> registerGame(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody @Valid GameRegisterDTO.Request gameRequestDTO) {
+        Response gameResponseDTO = gameService.registerGame(gameRequestDTO,
+                userDetails.getUser().getUserId());
 
         return ResponseEntity.ok(gameResponseDTO);
     }
@@ -54,7 +57,7 @@ public class GameController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable Long gameId,
             @RequestBody @Valid GameModifyDTO.Request gameModifyRequestDTO
-    ){
+    ) {
         GameModifyDTO.Response response = gameService.modifyGame(gameId, gameModifyRequestDTO,
                 userDetails.getUser().getUserId());
 
