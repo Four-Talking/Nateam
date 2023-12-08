@@ -1,5 +1,6 @@
 package fourtalking.Nateam.review.controller;
 
+import fourtalking.Nateam.global.security.userdetails.UserDetailsImpl;
 import fourtalking.Nateam.review.dto.GetAllReviewDTO;
 import fourtalking.Nateam.review.dto.GetReviewDTO;
 import fourtalking.Nateam.review.dto.ReviewRegisterDTO;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,29 +30,26 @@ public class ReviewController {
 
     @PostMapping("/{gameId}")
     public ResponseEntity<ReviewRegisterDTO.Response> registerReview(
-            //@AuthenticationPrincipal UserDetailsImpl userDetails,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable("gameId") Long gameId,
             @RequestBody @Valid ReviewRegisterDTO.Request reviewRequest) {
 
-        Response reviewResponseDTO = reviewService.registerReview(gameId, reviewRequest);
+        Response reviewResponseDTO = reviewService.registerReview(userDetails.getUser().getUserId(),
+                gameId, reviewRequest);
 
         return ResponseEntity.ok(reviewResponseDTO);
     }
 
     @GetMapping("/{reviewId}")
-    public ResponseEntity<GetReviewDTO> getReview(
-            //
-            @PathVariable("reviewId") Long reviewId) {
+    public ResponseEntity<GetReviewDTO> getReview(@PathVariable("reviewId") Long reviewId) {
 
-        GetReviewDTO getReviewDTO = reviewService.getReview("khj",reviewId);
+        GetReviewDTO getReviewDTO = reviewService.getReview(reviewId);
 
         return ResponseEntity.ok(getReviewDTO);
     }
 
     @GetMapping("/{gameId}/reviews")
-    public ResponseEntity<List<GetAllReviewDTO>> getAllReview(@PathVariable("gameId") Long gameId
-            //, @AuthenticationPrincipal UserDetailsImpl userDetails,
-            ) {
+    public ResponseEntity<List<GetAllReviewDTO>> getAllReview(@PathVariable("gameId") Long gameId) {
 
         List<GetAllReviewDTO> getAllReviewDTO = reviewService.getAllReview(gameId);
 
@@ -58,22 +57,22 @@ public class ReviewController {
     }
 
     @PatchMapping("/{reviewId}")
-    public ResponseEntity<UpdateReviewDTO.Response> updateReview(@PathVariable("reviewId") Long reviewId,
-            @RequestBody @Valid UpdateReviewDTO.Request request
-            //, @AuthenticationPrincipal UserDetailsImpl userDetails,
-    ) {
+    public ResponseEntity<UpdateReviewDTO.Response> updateReview(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable("reviewId") Long reviewId,
+            @RequestBody @Valid UpdateReviewDTO.Request request) {
 
-        UpdateReviewDTO.Response response = reviewService.updateReview(reviewId, request);
+        UpdateReviewDTO.Response response = reviewService.updateReview(userDetails.getUser()
+                .getUserId(), reviewId, request);
 
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<String> deleteReview(@PathVariable("reviewId") Long reviewId
-            //, @AuthenticationPrincipal UserDetailsImpl userDetails,
-    ) {
+    public ResponseEntity<String> deleteReview(@AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable("reviewId") Long reviewId) {
 
-        reviewService.deleteReview(reviewId);
+        reviewService.deleteReview(userDetails.getUser().getUserId(), reviewId);
 
         return ResponseEntity.ok("삭제 성공");
     }
