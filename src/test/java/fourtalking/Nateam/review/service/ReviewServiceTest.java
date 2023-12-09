@@ -1,8 +1,11 @@
 package fourtalking.Nateam.review.service;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+import fourtalking.Nateam.global.exception.review.ReviewNotFoundException;
 import fourtalking.Nateam.review.dto.GetAllReviewDTO;
 import fourtalking.Nateam.review.dto.GetReviewDTO;
 import fourtalking.Nateam.review.dto.ReviewRegisterDTO;
@@ -19,6 +22,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -153,5 +157,26 @@ class ReviewServiceTest implements CommonTest {
         assertEquals(reviewContent, response.reviewContent());
         assertEquals(reviewRank, response.reviewRank());
         assertEquals(reviewId, response.reviewId());
+    }
+
+    @Test
+    @DisplayName("리뷰 삭제 테스트")
+    void test5() {
+
+        // given
+        Long gameId = 1L;
+        String reviewContent = "review";
+        int reviewRank = 2;
+        ReviewRegisterDTO.Request reviewRequest = new Request(reviewContent, reviewRank);
+        reviewService.registerReview(TEST_USER_ID, gameId, reviewRequest);
+
+        Long reviewId = 1L;
+
+        // when
+        reviewService.deleteReview(TEST_USER_ID, reviewId);
+
+        // then
+        assertThatThrownBy(() -> reviewService.getReview(reviewId)).isInstanceOf(
+                ReviewNotFoundException.class);
     }
 }
