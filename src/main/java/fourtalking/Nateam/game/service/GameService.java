@@ -7,8 +7,6 @@ import fourtalking.Nateam.game.entity.Game;
 import fourtalking.Nateam.game.repositroy.GameRepository;
 import fourtalking.Nateam.global.exception.game.GameNotFoundException;
 import fourtalking.Nateam.global.exception.user.NoAuthorizationException;
-import fourtalking.Nateam.review.dto.GetAllReviewDTO;
-import fourtalking.Nateam.review.service.ReviewService;
 import fourtalking.Nateam.user.entity.User;
 import fourtalking.Nateam.user.service.UserService;
 import jakarta.transaction.Transactional;
@@ -20,8 +18,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class GameService {
-
-    private final ReviewService reviewService;
 
     private final UserService userService;
 
@@ -45,7 +41,7 @@ public class GameService {
 
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
         User user = userService.findById(game.getUserId());
-        double gameReviewRank = calculateGameRank(game.getGameId());
+        double gameReviewRank = gameRepository.getGameReviewRank(game.getGameId());
 
         return GameGetDTO.of(game, gameReviewRank, user.getUserName());
     }
@@ -66,7 +62,7 @@ public class GameService {
 
         modifyGame(game, gameModifyRequestDTO);
 
-        double gameReviewRank = calculateGameRank(gameId);
+        double gameReviewRank = gameRepository.getGameReviewRank(gameId);
 
         return GameModifyDTO.Response.of(game, gameReviewRank, user.getUserName());
     }
@@ -85,18 +81,6 @@ public class GameService {
         int gamePrice = gameModifyRequestDTO.gamePrice();
 
         game.modifyGame(gameName, gameIntroduction, gamePrice);
-    }
-
-    private double calculateGameRank(Long gameId) {
-
-        List<GetAllReviewDTO> reviews = reviewService.getAllReview(gameId);
-
-        double sumReviewRank = 0;
-        for (GetAllReviewDTO review : reviews) {
-            sumReviewRank += review.reviewRank();
-        }
-
-        return sumReviewRank / reviews.size();
     }
 
     public void deleteGame(Long gameId, Long userId) {
