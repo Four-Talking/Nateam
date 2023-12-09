@@ -5,6 +5,7 @@ import fourtalking.Nateam.game.entity.Game;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface GameRepository extends JpaRepository<Game, Long> {
 
@@ -18,5 +19,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
             + "group by g.gameId "
             + "order by g.createdTime desc")
     List<GameGetDTO> findAllGameGetDTOOrderByCreatedTime();
+
+    @Query("select coalesce(avg(r.reviewRank), 0) from Game g left outer join Review r on g.gameId = r.gameId group by g.gameId having g.gameId = :gameId")
+    Double getGameReviewRank(@Param("gameId") Long gameId);
 
 }
