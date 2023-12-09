@@ -74,7 +74,6 @@ public class UserServiceTest implements CommonTest {
         assertEquals(TEST_USER_NAME, user.getUserName());
 
         List<PasswordHistory> historyList = passwordHistoryService.findTop3PasswordHistory(user.getUserId());
-        System.out.println(user.getUserId());
         assertEquals(1, historyList.size());
     }
 
@@ -83,7 +82,7 @@ public class UserServiceTest implements CommonTest {
     void test2() {
 
         //given
-        userRepository.saveAndFlush(TEST_USER);
+        userRepository.save(TEST_USER);
 
         SignupDTO signupDTO = new SignupDTO(TEST_USER_NAME, TEST_USER_PASSWORD);
 
