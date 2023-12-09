@@ -3,6 +3,7 @@ package fourtalking.Nateam.review.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import fourtalking.Nateam.review.dto.GetReviewDTO;
 import fourtalking.Nateam.review.dto.ReviewRegisterDTO;
 import fourtalking.Nateam.review.dto.ReviewRegisterDTO.Request;
 import fourtalking.Nateam.review.dto.ReviewRegisterDTO.Response;
@@ -56,5 +57,29 @@ class ReviewServiceTest implements CommonTest {
         assertEquals(gameId, response.gameId());
         assertEquals(reviewContent, response.reviewContent());
         assertEquals(reviewRank, response.reviewRank());
+    }
+
+    @Test
+    @DisplayName("리뷰 조회 테스트")
+    void test2() {
+
+        // given
+        Long gameId = 1L;
+        String reviewContent = "review";
+        int reviewRank = 2;
+        ReviewRegisterDTO.Request reviewRequest = new Request(reviewContent,reviewRank);
+        Response response = reviewService.registerReview(TEST_USER_ID, gameId, reviewRequest);
+
+        Long reviewId = response.reviewId();
+
+        // when
+        GetReviewDTO getReviewDTO = reviewService.getReview(reviewId);
+
+        // then
+        assertEquals(TEST_USER_NAME, getReviewDTO.userName());
+        assertEquals(gameId, getReviewDTO.gameId());
+        assertEquals(reviewContent, getReviewDTO.reviewContent());
+        assertEquals(reviewRank, getReviewDTO.reviewRank());
+        assertEquals(reviewId, getReviewDTO.reviewId());
     }
 }
