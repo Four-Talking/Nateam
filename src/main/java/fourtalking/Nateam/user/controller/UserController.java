@@ -53,7 +53,8 @@ public class UserController {
     public ResponseEntity<EditProfileDTO.Response> editProfile(@Valid @RequestBody EditProfileDTO.Request editProfileRequestDTO, @AuthenticationPrincipal
     UserDetailsImpl userDetails) {
 
-        EditProfileDTO.Response editProfileResponseDTO = userService.editProfile(editProfileRequestDTO, userDetails);
+        EditProfileDTO.Response editProfileResponseDTO = userService.editProfile(
+                editProfileRequestDTO, userDetails.getUser().getUserId());
 
         return ResponseEntity.ok(editProfileResponseDTO);
     }

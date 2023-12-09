@@ -6,7 +6,6 @@ import fourtalking.Nateam.global.exception.user.InvalidUserIdAndPasswordExceptio
 import fourtalking.Nateam.global.exception.user.UserNotFoundException;
 import fourtalking.Nateam.global.exception.user.WrongPasswordException;
 import fourtalking.Nateam.global.security.jwt.JwtUtil;
-import fourtalking.Nateam.global.security.userdetails.UserDetailsImpl;
 import fourtalking.Nateam.passwordhistory.entity.PasswordHistory;
 import fourtalking.Nateam.passwordhistory.service.PasswordHistoryService;
 import fourtalking.Nateam.user.dto.ChangePasswordDTO;
@@ -74,9 +73,9 @@ public class UserService {
 
     @Transactional
     public Response editProfile(EditProfileDTO.Request editProfileRequestDTO,
-            UserDetailsImpl userDetails) {
+            Long userId) {
 
-        User user = userRepository.findById(userDetails.getUser().getUserId())
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         if (!passwordEncoder.matches(editProfileRequestDTO.password(), user.getPassword())) {

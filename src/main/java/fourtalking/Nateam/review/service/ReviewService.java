@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class ReviewService {
 
     private final UserService userService;
-    //private final GameService gameService;
+//    private final GameService gameService;
     private final ReviewRepository reviewRepository;
 
     public Review findById(Long reviewId) {
