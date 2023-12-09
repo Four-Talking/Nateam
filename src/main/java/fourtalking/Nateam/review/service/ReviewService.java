@@ -1,7 +1,5 @@
 package fourtalking.Nateam.review.service;
 
-import fourtalking.Nateam.game.service.GameService;
-import fourtalking.Nateam.global.exception.game.GameNotFoundException;
 import fourtalking.Nateam.global.exception.review.InconsistencyUserIdException;
 import fourtalking.Nateam.global.exception.review.ReviewNotFoundException;
 import fourtalking.Nateam.review.dto.GetAllReviewDTO;
@@ -22,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class ReviewService {
 
     private final UserService userService;
-    private final GameService gameService;
+    //private final GameService gameService;
     private final ReviewRepository reviewRepository;
 
     public Review findById(Long reviewId) {
@@ -32,9 +30,9 @@ public class ReviewService {
 
     public ReviewRegisterDTO.Response registerReview(Long userId, Long gameId, ReviewRegisterDTO.Request reviewRequest) {
 
-        if(!gameId.equals(gameService.getGameById(gameId).gameId())){
-            throw new GameNotFoundException();
-        }
+//        if(!gameId.equals(gameService.getGameById(gameId).gameId())){
+//            throw new GameNotFoundException();
+//        }
 
         Review review = reviewRepository.save(reviewRequest.toEntity(userId, gameId));
         String userName = getUserName(review);
