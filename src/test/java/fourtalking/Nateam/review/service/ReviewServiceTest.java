@@ -8,11 +8,16 @@ import fourtalking.Nateam.review.dto.GetReviewDTO;
 import fourtalking.Nateam.review.dto.ReviewRegisterDTO;
 import fourtalking.Nateam.review.dto.ReviewRegisterDTO.Request;
 import fourtalking.Nateam.review.dto.ReviewRegisterDTO.Response;
+import fourtalking.Nateam.review.dto.UpdateReviewDTO;
 import fourtalking.Nateam.review.repository.ReviewRepository;
 import fourtalking.Nateam.test.CommonTest;
 import fourtalking.Nateam.user.dto.SignupDTO;
 import fourtalking.Nateam.user.entity.User;
 import fourtalking.Nateam.user.service.UserService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +32,7 @@ class ReviewServiceTest implements CommonTest {
 
     @Autowired
     UserService userService;
-//    @Autowired
+    //    @Autowired
 //    private final GameService gameService;
     @Autowired
     ReviewRepository reviewRepository;
@@ -36,7 +41,7 @@ class ReviewServiceTest implements CommonTest {
 
     @BeforeEach
     public void setup() {
-        SignupDTO signRequestDTO = new SignupDTO(TEST_USER_NAME,TEST_USER_PASSWORD);
+        SignupDTO signRequestDTO = new SignupDTO(TEST_USER_NAME, TEST_USER_PASSWORD);
         userService.signup(signRequestDTO);
     }
 
@@ -48,7 +53,7 @@ class ReviewServiceTest implements CommonTest {
         Long gameId = 1L;
         String reviewContent = "review";
         int reviewRank = 2;
-        ReviewRegisterDTO.Request reviewRequest = new Request(reviewContent,reviewRank);
+        ReviewRegisterDTO.Request reviewRequest = new Request(reviewContent, reviewRank);
 
         // when
         Response response = reviewService.registerReview(TEST_USER_ID, gameId, reviewRequest);
@@ -69,7 +74,7 @@ class ReviewServiceTest implements CommonTest {
         Long gameId = 1L;
         String reviewContent = "review";
         int reviewRank = 2;
-        ReviewRegisterDTO.Request reviewRequest = new Request(reviewContent,reviewRank);
+        ReviewRegisterDTO.Request reviewRequest = new Request(reviewContent, reviewRank);
         Response response = reviewService.registerReview(TEST_USER_ID, gameId, reviewRequest);
 
         Long reviewId = response.reviewId();
@@ -93,13 +98,15 @@ class ReviewServiceTest implements CommonTest {
         Long gameId = 1L;
         String reviewContent = "review";
         int reviewRank = 2;
-        ReviewRegisterDTO.Request reviewRequest = new Request(reviewContent,reviewRank);
+        ReviewRegisterDTO.Request reviewRequest = new Request(reviewContent, reviewRank);
         Response response = reviewService.registerReview(TEST_USER_ID, gameId, reviewRequest);
 
         String anotherReviewContent = "review2";
         int anotherReviewRank = 3;
-        ReviewRegisterDTO.Request anotherReviewRequest = new Request(anotherReviewContent,anotherReviewRank);
-        Response anotherResponse = reviewService.registerReview(TEST_USER_ID, gameId, anotherReviewRequest);
+        ReviewRegisterDTO.Request anotherReviewRequest = new Request(anotherReviewContent,
+                anotherReviewRank);
+        Response anotherResponse = reviewService.registerReview(TEST_USER_ID, gameId,
+                anotherReviewRequest);
 
         Long reviewId = response.reviewId();
         Long anotherReviewId = anotherResponse.reviewId();
@@ -119,5 +126,32 @@ class ReviewServiceTest implements CommonTest {
 
         assertEquals(reviewRank, getAllReviewDTOList.get(1).reviewRank());
         assertEquals(anotherReviewRank, getAllReviewDTOList.get(0).reviewRank());
+    }
+
+    @Test
+    @DisplayName("리뷰 수정 테스트")
+    void test4() {
+
+        // given
+        Long gameId = 1L;
+        String reviewContent = "review";
+        int reviewRank = 2;
+        ReviewRegisterDTO.Request reviewRequest = new Request(reviewContent, reviewRank);
+        reviewService.registerReview(TEST_USER_ID, gameId, reviewRequest);
+
+        Long reviewId = 1L;
+        reviewRank = 5;
+        reviewContent = "updateReview";
+        UpdateReviewDTO.Request request = new UpdateReviewDTO.Request(reviewContent, reviewRank);
+
+        // when
+        UpdateReviewDTO.Response response = reviewService.updateReview(TEST_USER_ID, reviewId,
+                request);
+
+        // then
+        assertEquals(TEST_USER_NAME, response.userName());
+        assertEquals(reviewContent, response.reviewContent());
+        assertEquals(reviewRank, response.reviewRank());
+        assertEquals(reviewId, response.reviewId());
     }
 }
