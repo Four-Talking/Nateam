@@ -11,6 +11,7 @@ import fourtalking.Nateam.review.dto.GetAllReviewDTO;
 import fourtalking.Nateam.review.service.ReviewService;
 import fourtalking.Nateam.user.entity.User;
 import fourtalking.Nateam.user.service.UserService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,7 @@ public class GameService {
         return gameRepository.findAllGameGetDTOOrderByCreatedTime();
     }
 
+    @Transactional
     public GameModifyDTO.Response modifyGame(
             Long gameId,
             GameModifyDTO.Request gameModifyRequestDTO,
