@@ -20,7 +20,7 @@ public record GameGetDTO(
         return GameGetDTO.builder()
                 .gameId(game.getGameId())
                 .gameName(game.getGameName())
-                .gameIntroduction(game.getGameName())
+                .gameIntroduction(game.getGameIntroduction())
                 .gamePrice(game.getGamePrice())
                 .gameReviewRank(gameReviewRank)
                 .userName(userName)
