@@ -17,12 +17,13 @@ public class GameModifyDTO {
     }
 
     @Builder
-    public record Response(String gameName, String gameIntroduction, int gamePrice,
+    public record Response(Long gameId, String gameName, String gameIntroduction, int gamePrice,
                            double gameReviewRank, String userName, LocalDateTime createdDate
             , LocalDateTime lastModifiedDate) {
 
         public static GameModifyDTO.Response of(Game game, double gameReviewRank, String userName) {
             return Response.builder()
+                    .gameId(game.getGameId())
                     .gameName(game.getGameName())
                     .gameIntroduction(game.getGameIntroduction())
                     .gamePrice(game.getGamePrice())
