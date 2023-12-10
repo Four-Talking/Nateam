@@ -11,6 +11,7 @@ public interface CommonTest {
     String TEST_USER_NAME = "nateam";
     String TEST_USER_PASSWORD = "12345678";
     User TEST_USER = User.builder()
+            .userId(TEST_USER_ID)
             .userName(TEST_USER_NAME)
             .password(TEST_USER_PASSWORD)
             .userRole(UserRole.USER)
