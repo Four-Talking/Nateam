@@ -20,4 +20,15 @@ public record OrderGameDTO(
 
   }
 
+  public static OrderGameDTO of(Long gameId, String gameName, int gamePrice, int orderCount) {
+    return OrderGameDTO.builder()
+        .gameId(gameId)
+        .gameName(gameName)
+        .gamePrice(gamePrice * orderCount)
+        .orderCount(orderCount)
+        .build();
+
+  }
+
+
 }

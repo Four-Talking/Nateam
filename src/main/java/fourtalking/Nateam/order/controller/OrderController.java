@@ -5,6 +5,7 @@ import fourtalking.Nateam.order.dto.OrderGetDTO;
 import fourtalking.Nateam.order.dto.OrderRegisterDTO;
 import fourtalking.Nateam.order.service.OrderService;
 import fourtalking.Nateam.user.entity.User;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,6 +40,15 @@ public class OrderController {
     return ResponseEntity.ok(orderGetDTO);
   }
 
+  @GetMapping()
+  public ResponseEntity<List<OrderGetDTO>> getsOrder(@AuthenticationPrincipal UserDetailsImpl userDetails){
+
+    List<OrderGetDTO> ordersGetDTOList = orderService.getsOrder(userDetails.getUser());
+
+    return ResponseEntity.ok(ordersGetDTOList);
+  }
+
+
   @DeleteMapping("/{orderId}")
   public ResponseEntity<String> deleteOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
           @PathVariable("orderId") Long orderId){
@@ -48,4 +58,5 @@ public class OrderController {
 
     return ResponseEntity.ok("삭제 성공");
   }
+
 }
