@@ -7,6 +7,7 @@ import fourtalking.Nateam.game.service.GameService;
 import fourtalking.Nateam.global.exception.order.OrderNotFoundException;
 import fourtalking.Nateam.global.exception.review.InconsistencyUserIdException;
 import fourtalking.Nateam.order.dto.OrderGameDTO;
+import fourtalking.Nateam.order.dto.OrderGameGetAllDTO;
 import fourtalking.Nateam.order.dto.OrderGetDTO;
 import fourtalking.Nateam.order.dto.OrderRegisterDTO;
 import fourtalking.Nateam.order.entity.Orders;
@@ -35,7 +36,7 @@ public class OrderService {
   }
 
   // 주문하기 서비스
- @Transactional
+  @Transactional
   public OrderRegisterDTO registerOrder(User user) {
 
     //로그인중 유저 장바구니 정보 가져오기
@@ -108,17 +109,55 @@ public class OrderService {
     return OrderGetDTO.of(orders, userName, orderGameDTOList);
   }
 
-    @Transactional
-    public void deleteOrder(Long userId, Long orderId) {
+  // 주문 전체 목록 조회 서비스
+  public List<OrderGetDTO> getsOrder(User user) {
 
-      Orders orders = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+    List<OrderGameGetAllDTO> orderGameGetAllDTOs =
+        orderRepository.findAllOrderGetDTOOrderByCreatedTime(user.getUserId());
 
-      if (!userId.equals(orders.getUserId())) {
+    List<OrderGetDTO> orderGetDTOList = new ArrayList<>();
 
-        throw new InconsistencyUserIdException();
+    Long checkOrderId = 0L;
+    for (OrderGameGetAllDTO OGGADTO : orderGameGetAllDTOs) {
+      if (!(OGGADTO.orderId().equals(checkOrderId))) {
+        checkOrderId = OGGADTO.orderId();
+
+        orderGetDTOList.add(
+            OrderGetDTO.of(OGGADTO.orderId(), OGGADTO.orderTotalPrice(), OGGADTO.userName(),
+                OGGADTO.createdTime(), new ArrayList<>()));
       }
 
-      orderGameService.deleteAllByOrderId(orderId);
-      orderRepository.deleteById(orderId);
+      addOrderGameDTO(orderGetDTOList, OGGADTO.gameId(), OGGADTO.gameName(), OGGADTO.gamePrice(),
+          OGGADTO.orderCount());
+
     }
+    return orderGetDTOList;
+  }
+
+  public List<OrderGetDTO> addOrderGameDTO(List<OrderGetDTO> orderGetDTOList, Long gameId,
+      String gameName, int gamePrice, int orderCount) {
+
+    int lastIndex = orderGetDTOList.size() - 1;
+
+    orderGetDTOList.get(lastIndex).addOrderGameList(
+        OrderGameDTO.of(gameId, gameName, gamePrice, orderCount));
+
+    return orderGetDTOList;
+  }
+
+  @Transactional
+  public void deleteOrder(Long userId, Long orderId) {
+
+    Orders orders = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+
+    if (!userId.equals(orders.getUserId())) {
+
+      throw new InconsistencyUserIdException();
+    }
+
+    orderGameService.deleteAllByOrderId(orderId);
+    orderRepository.deleteById(orderId);
+  }
+
+
 }
