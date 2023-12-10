@@ -4,6 +4,7 @@ import fourtalking.Nateam.cartgame.entity.CartGame;
 import fourtalking.Nateam.cartgame.service.CartGameService;
 import fourtalking.Nateam.game.entity.Game;
 import fourtalking.Nateam.game.service.GameService;
+import fourtalking.Nateam.global.exception.order.OrderEmptyCartException;
 import fourtalking.Nateam.global.exception.order.OrderNotFoundException;
 import fourtalking.Nateam.global.exception.review.InconsistencyUserIdException;
 import fourtalking.Nateam.order.dto.OrderGameDTO;
@@ -41,6 +42,11 @@ public class OrderService {
 
     //로그인중 유저 장바구니 정보 가져오기
     List<CartGame> cartGameList = cartGameService.findUserCart(user.getUserId());
+
+    //장바구니에 한개도 없을시 예외 처리
+    if (cartGameList.isEmpty()){
+      throw new OrderEmptyCartException();
+    }
 
     // 로그인중 유저 장바구니에 담긴 게임 총 가격 구하는 메소드
     int cartTotalPrice = getCartGamesTotalPrice(cartGameList);

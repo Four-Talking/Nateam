@@ -36,7 +36,8 @@ public enum ErrorCode {
   NOT_FOUND_CART_IN_GAME_EXCEPTION(401, "장바구니에 해당 게임을 찾을 수 없습니다"),
 
   // 주문
-  NOT_FOUND_ORDER_EXCEPTION(401, "해당 주문을 찾을 수 없습니다.");
+  NOT_FOUND_ORDER_EXCEPTION(401, "해당 주문을 찾을 수 없습니다."),
+  EMPTY_CART_EXCEPTION(400,"장바구니가 비어 있습니다");
 
   private final int status;
 
