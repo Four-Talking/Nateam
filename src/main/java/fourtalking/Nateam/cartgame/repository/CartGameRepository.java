@@ -9,4 +9,6 @@ public interface CartGameRepository extends JpaRepository<CartGame,Long> {
   List<CartGame> findCartsByUserId(Long userId);
 
   void deleteAllByUserId(Long userId);
+
+  void deleteByGameId(Long gameId);
 }
