@@ -113,7 +113,7 @@ public class UserService {
     private void savePasswordHistory(Long userId, String password) {
 
         PasswordHistory passwordHistory =
-                PasswordHistory.createPasswordHistory(password, userId);
+                PasswordHistory.createPasswordHistory(passwordEncoder.encode(password), userId);
 
         passwordHistoryService.savePasswordHistory(passwordHistory);
     }
