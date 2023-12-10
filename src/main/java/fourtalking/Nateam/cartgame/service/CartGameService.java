@@ -87,6 +87,7 @@ public class CartGameService {
   }
 
   // 장바구니 게임 삭제 서비스
+  @Transactional
   public CartsGetDTO deleteCartGame(Long gameId, Long userId) {
 
     // 로그인중 유저 장바구니 목록 가져오기
@@ -107,7 +108,6 @@ public class CartGameService {
     return CartsGetDTO.of(cartGameDTOs, totalPrice);
   }
 
-
   public List<CartGameDTO> deleteCartGameAndConvertDTO(List<CartGame> cartList, Long gameId) {
 
     List<CartGameDTO> cartGameDTOs = new ArrayList<>();
@@ -116,7 +116,7 @@ public class CartGameService {
       Game game = gameService.findById(cartGame.getGameId());
       // 유저가 요청한 게임 삭제
       if (game.getGameId().equals(gameId)) {
-        cartGameRepository.deleteById(gameId);
+        cartGameRepository.deleteByGameId(gameId);
         continue;
       }
       CartGameDTO cartGameDTO = CartGameDTO.of(game, cartGame.getOrderCount());
